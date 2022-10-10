@@ -4,6 +4,7 @@ from decouple import config
 
 app=Flask(__name__)
 
+#database connection
 database_name="bookinfo"
 password=config("mongo_password")
 DB_URI="mongodb+srv://admin:{}@flaskapp.mdlfoa8.mongodb.net/{}?retryWrites=true&w=majority".format(password,database_name)
@@ -11,6 +12,7 @@ DB_URI="mongodb+srv://admin:{}@flaskapp.mdlfoa8.mongodb.net/{}?retryWrites=true&
 db=MongoEngine()
 db.connect(db=database_name,username='admin',password=password,host=DB_URI)
 
+#defining data model
 class Book(db.Document):
     book_id= db.IntField()
     name= db.StringField()
@@ -23,7 +25,7 @@ class Book(db.Document):
             "author": self.author
         }
 
-
+#routes
 @app.route('/books/createBook',methods=['POST'])
 def api_create():
     if request.method=="POST":
